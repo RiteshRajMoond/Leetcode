@@ -1,24 +1,34 @@
 class Solution {
 public:
-    int findCircleNum(vector<vector<int>>& con) {
-        int n = con.size();
+    int findCircleNum(vector<vector<int>>& isCon) {
+        int n = isCon.size();
         unordered_set<int> st;
 
-        auto dfs = [&](auto& self, int cur) -> void {
+        auto bfs = [&](int cur) -> void {
+            queue<int> q;
+            q.push(cur);
             st.insert(cur);
-            for(int i = 0; i < n; i++) {
-                if(cur != i && con[cur][i] == 1 && !st.count(i)) self(self, i);
+
+            while (!q.empty()) {
+                int ft = q.front();
+                q.pop();
+
+                for (int i = 0; i < n; i++) {
+                    if (i != ft && isCon[ft][i] == 1 && !st.count(i)) {
+                        st.insert(i);
+                        q.push(i);
+                    }
+                }
             }
         };
 
         int res = 0;
-        for(int i = 0; i < n; i++) {
-            if(!st.count(i)) {
+        for (int i = 0; i < n; i++) {
+            if (!st.count(i)) {
                 res++;
-                dfs(dfs, i);
+                bfs(i);
             }
         }
-
         return res;
     }
 };
