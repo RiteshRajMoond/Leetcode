@@ -1,6 +1,5 @@
 class Solution {
 public:
-    vector<vector<int>> dp;
     int findTargetSumWays(vector<int>& nums, int target) {
         int n = nums.size();
         int sum = accumulate(nums.begin(), nums.end(), 0);
@@ -9,26 +8,27 @@ public:
         int tar = (sum+target) >> 1;
         if(tar < 0) return 0;
 
-        dp = vector<vector<int>> (n, vector<int> (tar+1, -1));
+        vector<vector<int>> dp(n, vector<int> (tar+1, 0));
 
-        return f(nums, n-1, tar);
-    }
-private:
-    int f(vector<int>& nums, int idx, int tar) {
-        // base case
-        if(idx == 0) {
-            if(tar == 0 && nums[0] == 0) return 2;
-            else if(tar == 0 || nums[0] == tar) return 1;
-            return 0;
+        // return f(nums, n-1, tar);
+
+        if(nums[0] == 0) dp[0][0] = 2;
+        else {
+            dp[0][0] = 1;
+            if(tar >= nums[0]) dp[0][nums[0]] = 1;
         }
 
-        if(dp[idx][tar] != -1) return dp[idx][tar];
+        for(int i = 1; i < n; i++) {
+            for(int j = 0; j <= tar; j++) {
+                int nt = dp[i-1][j];
+                int t = 0;
+                if(nums[i] <= j) 
+                    t = dp[i-1][j-nums[i]];
+                
+                dp[i][j] = t+nt;
+            }
+        }
 
-        int nt = f(nums, idx-1, tar);
-        int t = 0;
-        if(nums[idx] <= tar) 
-            t = f(nums, idx-1, tar - nums[idx]);
-
-        return dp[idx][tar] = t + nt;
+        return dp[n-1][tar];
     }
 };
