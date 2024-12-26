@@ -8,27 +8,26 @@ public:
         int tar = (sum+target) >> 1;
         if(tar < 0) return 0;
 
-        vector<vector<int>> dp(n, vector<int> (tar+1, 0));
+        vector<int> prev (tar+1, 0), cur(tar+1, 0);
 
-        // return f(nums, n-1, tar);
-
-        if(nums[0] == 0) dp[0][0] = 2;
+        if(nums[0] == 0) prev[0] = 2;
         else {
-            dp[0][0] = 1;
-            if(tar >= nums[0]) dp[0][nums[0]] = 1;
+            prev[0] = 1;
+            if(tar >= nums[0]) prev[nums[0]] = 1;
         }
 
         for(int i = 1; i < n; i++) {
             for(int j = 0; j <= tar; j++) {
-                int nt = dp[i-1][j];
+                int nt = prev[j];
                 int t = 0;
                 if(nums[i] <= j) 
-                    t = dp[i-1][j-nums[i]];
+                    t = prev[j-nums[i]];
                 
-                dp[i][j] = t+nt;
+                cur[j] = t+nt;
             }
+            prev = cur;
         }
 
-        return dp[n-1][tar];
+        return prev[tar];
     }
 };
