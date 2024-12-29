@@ -8,24 +8,25 @@ public:
         int n = words[0].size(); 
         preprocess(words);
 
-        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+        vector<int> prev(n+1, 0), cur(n+1, 0);
         for (int j = 0; j <= n; j++) {
-            dp[0][j] = 1;
+            prev[j] = 1;
         }
 
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 // nt
-                dp[i][j] = dp[i][j - 1];
+                cur[j] = cur[j - 1];
 
                 // t
                 int count = counts[target[i - 1] - 'a'][j - 1];
                 if (count > 0) {
-                    dp[i][j] = (dp[i][j] + 1LL * count * dp[i - 1][j - 1]) % mod;
+                    cur[j] = (cur[j] + 1LL * count * prev[j - 1]) % mod;
                 }
             }
+            prev = cur;
         }
-        return dp[m][n];
+        return cur[n];
     }
 
 private:
