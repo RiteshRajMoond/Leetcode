@@ -36,7 +36,7 @@ class Solution {
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& acc) {
         int n = acc.size();
-        map<string, int> mp; // string: int
+        unordered_map<string, int> mp; // string: int
 
         DisjointSet ds(n);
 
@@ -50,7 +50,7 @@ public:
             }
         }
 
-        map<int, vector<string>> mp1; // Node(int): emails
+        unordered_map<int, vector<string>> mp1; // Node(int): emails
         for(auto& i : mp) {
             string email = i.first;
             int name = ds.find(i.second);
