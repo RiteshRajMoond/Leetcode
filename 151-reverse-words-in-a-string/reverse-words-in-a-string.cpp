@@ -2,18 +2,15 @@ class Solution {
 public:
     string reverseWords(string s) {
         stringstream ss(s);
-        vector<string> words;
+        vector<string> w;
         while(ss >> s) {
-            words.push_back(s);
+            w.push_back(s);
         }
-        string res;
-        for (auto it = words.rbegin(); it != words.rend(); ++it) {
-            if (!res.empty()) {
-                res += " "; 
-            }
-            res += *it;
+        string res = "";
+        for(auto i=w.rbegin(); i!=w.rend(); i++){
+            if(!res.empty()) res += " ";
+            res += *i;
         }
-
         return res;
     }
 };
