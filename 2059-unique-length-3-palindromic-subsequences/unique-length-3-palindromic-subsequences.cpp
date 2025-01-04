@@ -12,11 +12,11 @@ public:
 
         for(int i = 0; i < 26; i++) {
             if(first[i] == -1 || last[i] == first[i]) continue;
-            unordered_set<char> st;
-            for(int j = first[i]+1; j < last[i]; j++) {
-                st.insert(s[j]);
+            bitset<26> uniqueChars;
+            for(int j = first[i] + 1; j < last[i]; j++) {
+                uniqueChars.set(s[j] - 'a');
             }
-            res += st.size();
+            res += uniqueChars.count();
         }
 
         return res;
