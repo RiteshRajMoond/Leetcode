@@ -6,17 +6,18 @@ public:
             mp[c]++;
         }
 
-        priority_queue< pair<int, char> >pq;
+        vector<vector<char>> v(s.size()+1);
         for(auto& [ch, freq]: mp) {
-            pq.push({freq, ch});
+            v[freq].push_back(ch);
         }
 
         string res = "";
-        while(!pq.empty()) {
-            int n = pq.top().first;
-            int ch = pq.top().second;
-            pq.pop();
-            res.append(n, ch);
+        for(int i = s.size(); i >= 0; i--) {
+            if(!v[i].empty()) {
+                for(int j = 0; j < v[i].size(); j++) {
+                    res.append(i, v[i][j]);
+                }
+            }
         }
         return res;
     }
