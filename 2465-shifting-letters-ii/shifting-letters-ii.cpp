@@ -3,7 +3,6 @@ public:
     string shiftingLetters(string s, vector<vector<int>>& shifts) {
         int n = s.size();
         vector<int> pref(n+1, 0);
-
         for(auto& shift : shifts) {
             int start = shift[0];
             int end = shift[1];
@@ -18,10 +17,10 @@ public:
         }
 
         for(int i = 0; i < n; i++) {
-            int shift = (pref[i] % 26 + 26) % 26;
-            s[i] = 'a' + (s[i] - 'a' + shift) % 26;
+            int shift = (pref[i]%26+26)%26;
+            s[i] = 'a' + (-'a'+s[i]+shift)%26;
         }
-
+        
         return s;
     }
 };
