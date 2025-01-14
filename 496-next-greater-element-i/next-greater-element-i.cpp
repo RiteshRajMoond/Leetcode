@@ -6,9 +6,9 @@ public:
         stack<int> st;
 
         for(int i = n2-1; i >= 0; i--) {
-            while(!st.empty() && nums2[i] > st.top()) st.pop();
-            if(st.empty()) mp[nums2[i]] = -1;
-            else mp[nums2[i]] = st.top();
+            while(!st.empty() && st.top() < nums2[i]) st.pop();
+            if(!st.empty()) mp[nums2[i]] = st.top();
+            else mp[nums2[i]] = -1;
             st.push(nums2[i]);
         }
 
