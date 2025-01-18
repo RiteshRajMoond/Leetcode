@@ -9,23 +9,13 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        map<ListNode*, int> mp;
-        ListNode* temp = headA;
-        while(temp) {
-            mp[temp]++;
-            temp = temp->next;
+        ListNode* a = headA, *b = headB;
+
+        while(a != b) {
+            a = (!a) ? headB: a->next;
+            b = (!b) ? headA: b->next;
         }
 
-        temp = headB;
-        while(temp) {
-            mp[temp]++;
-            temp = temp->next;
-        }
-
-        for(auto& [node, freq]: mp) {
-            if(freq == 2) return node;
-        }
-
-        return nullptr;
+        return a;
     }
 };
