@@ -3,12 +3,8 @@ private:
     Node* links[2];
 public:
     Node() {
-        links[0] = NULL;
-        links[1] = NULL;
-    }
-
-    bool containsKey(int bit) {
-        return links[bit] != NULL;
+        links[0] = nullptr;
+        links[1] = nullptr;
     }
 
     void put(int bit, Node* node) {
@@ -17,6 +13,10 @@ public:
 
     Node* get(int bit) {
         return links[bit];
+    }
+
+    bool containsKey(int bit) {
+        return links[bit] != nullptr;
     }
 };
 
@@ -28,46 +28,45 @@ public:
         root = new Node();
     }
 
-    void insert(int num) {
-        Node* node = root;
+    void insert_in_trie(int num) {
+        Node* cur = root;
         for(int i = 31; i >= 0; i--) {
             int bit = (num >> i) & 1;
-            if(!node->containsKey(bit)) {
-                node->put(bit, new Node());
-            }
-            node = node->get(bit);
+            if(!cur->containsKey(bit)) cur->put(bit, new Node());
+            cur = cur->get(bit);
         }
     }
 
     int get_max_xor(int num) {
+        Node* cur = root;
         int res = 0;
-        Node* node = root;
         for(int i = 31; i >= 0; i--) {
             int bit = (num >> i) & 1;
-            if(node->containsKey(!bit)) {
-                res |= (1 << i);
-                node = node->get(!bit);
+            if(cur->containsKey(!bit)) {
+                // set ith bit
+                res |= 1 << i;
+                cur = cur->get(!bit);
             } else {
-                node = node->get(bit);
+                cur = cur->get(bit);
             }
         }
         return res;
     }
+
+private:
 };
 
 class Solution {
 public:
     int findMaximumXOR(vector<int>& nums) {
-        int n = nums.size();
         Trie t;
-        for(int i = 0; i < n; i++) {
-            t.insert(nums[i]);
-        }
+        for(int & i : nums) t.insert_in_trie(i);
 
         int res = 0;
-        for(int i = 0; i < n; i++) {
-            res = max(t.get_max_xor(nums[i]), res);
+        for(int i = 0; i < nums.size(); i++) {
+            res = max(res, t.get_max_xor(nums[i]));
         }
+
         return res;
     }
 };
