@@ -6,23 +6,22 @@ public:
         int target = sum/2;
         int n = nums.size();
 
-        vector<vector<bool>> dp (n, vector<bool> (target+1, false));
+        vector<bool> prev(target+1, false);
+        vector<bool> cur(target+1, false);
 
-        for(int i = 0; i < n; i++) {
-            dp[i][0] = true;
-            if(target >= nums[i]) dp[i][nums[i]] = true;
-        }
+        prev[0] = true;
 
         for(int i = 1; i < n; i++) {
             for(int j = 0; j <= target; j++) {
-                bool nt = dp[i-1][j];
+                bool nt = prev[j];
                 bool t = false;
-                if(j >= nums[i]) t = dp[i-1][j - nums[i]];
+                if(j >= nums[i]) t = prev[j - nums[i]];
 
-                dp[i][j] = t || nt;
+                cur[j] = t || nt;
             }
+            prev = cur;
         }
 
-        return dp[n-1][target];
+        return prev[target];
     }
 };
