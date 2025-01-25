@@ -1,6 +1,6 @@
 class DisjointSet {
     vector<int> parent, size;
-public:
+  public:
     DisjointSet(int n) {
         parent.resize(n);
         iota(parent.begin(), parent.end(), 0);
