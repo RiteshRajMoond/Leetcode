@@ -52,7 +52,7 @@ public:
         }
         
         for(auto& i : mp) {
-            vector<int> indices = i.second;
+            vector<int>& indices = i.second;
             vector<int> val;
             for(int& j : indices) {
                 val.push_back(nums[j]);
