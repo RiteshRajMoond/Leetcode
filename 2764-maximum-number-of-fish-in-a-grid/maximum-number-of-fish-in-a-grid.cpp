@@ -1,34 +1,3 @@
-// class DisjointSet {
-//     vector<int> size, parent;
-// public:
-//     DisjointSet(int n) {
-//         size.resize(n, 1);
-//         parent.resize(n);
-//         iota(parent.begin(), parent.end(), 0);
-//     }
-
-//     // returns u_par
-//     int find(int n) {
-//         if(parent[n] == n) return n;
-//         return parent[n] = find(parent[n]);
-//     }
-
-//     void dsu(int u, int v) {
-//         int par_u = find(u);
-//         int par_v = find(v);
-
-//         if(par_u == par_v) return;
-
-//         if(size[par_u] >= size[par_v]) {
-//             parent[par_v] = par_u;
-//             size[par_u] += size[par_v];
-//         } else {
-//             parent[par_u] = par_v;
-//             size[par_v] += size[par_u];
-//         }
-//     }
-// };
-
 class Solution {
 public:
     int findMaxFish(vector<vector<int>>& grid) {
@@ -36,7 +5,6 @@ public:
         int n = grid[0].size();
 
         vector<vector<bool>> vis(m, vector<bool> (n, false));
-        // DisjointSet ds(m*n);
 
         auto bfs = [&] (int i, int j) -> int {
             int fish_count = 0;
