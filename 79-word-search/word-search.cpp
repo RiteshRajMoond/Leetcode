@@ -1,46 +1,46 @@
 class Solution {
-public:
     vector<vector<bool>> vis;
-    bool exist(vector<vector<char>>& board, string word) {
-        int m = board.size();
-        int n = board[0].size();
-        vis = vector<vector<bool>>(m, vector<bool> (n, false));
+    int dx[4] = {0, 1, 0, -1};
+    int dy[4] = {1, 0, -1, 0};
 
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] == word[0]) {
-                    vis[i][j] = true;
-                    bool res = f(board, word, i, j, 1);
-                    if (res)
-                        return true;
-                    vis[i][j] = false;
-                }
+    bool is_valid(int x, int y, int m, int n) {
+        if(x >= 0 && x < m && y >= 0 && y < n) return true;
+        return false;
+    }
+
+    bool is_word_present(int idx, int x, int y, vector<vector<char>>& grid, string& word) {
+        if(idx == word.size()) return true;
+
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if(is_valid(nx, ny, grid.size(), grid[0].size()) && !vis[nx][ny] && word[idx] == grid[nx][ny]) {
+                vis[nx][ny] = true;
+                bool res = is_word_present(idx+1, nx, ny, grid, word);
+                vis[nx][ny] = false;
+                if(res) return true;
             }
         }
 
         return false;
     }
 
-private:
-    bool f(vector<vector<char>>& board, string& word, int x, int y, int idx) {
-        if (idx == word.size())
-            return true;
-        vis[x][y] = true;
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size();
+        int n = board[0].size();
+        
+        vis.assign(m, vector<bool> (n, false));
 
-        int dx[] = {0, 1, 0, -1};
-        int dy[] = {1, 0, -1, 0};
-
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if (nx >= 0 && ny >= 0 && nx < board.size() &&
-                ny < board[0].size() && !vis[nx][ny] && board[nx][ny] == word[idx]) {
-                vis[nx][ny] = true;
-                bool res = f(board, word, nx, ny, idx + 1);
-                if (res)
-                    return true;
-                vis[nx][ny] = false;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(board[i][j] == word[0]) {
+                    vis[i][j] = true;
+                    bool res = is_word_present(1, i, j, board, word);
+                    if(res) return true;
+                    vis[i][j] = false;
+                }
             }
         }
 
