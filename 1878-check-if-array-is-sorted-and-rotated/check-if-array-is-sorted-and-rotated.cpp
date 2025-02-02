@@ -2,18 +2,15 @@ class Solution {
 public:
     bool check(vector<int>& arr) {
         int n = arr.size();
-        int flag = 0;
-        for (int i = 0; i < n - 1; i++) {
-            if (flag == 2) {
+        int cnt = 0;
+        for (int i = 1; i < n; i++) {
+            int last = arr[i - 1], cur = arr[i];
+            if (last > cur)
+                cnt++;
+            if (cnt == 2)
                 return false;
-            }
-            if (arr[i] > arr[i + 1]) {
-                flag += 1;
-            }
         }
-        if (arr[0] < arr[n - 1]) {
-            flag++;
-        }
-        return flag != 2;
+        cnt = (arr.back() > arr.front()) ? ++cnt : cnt;
+        return cnt < 2;
     }
 };
