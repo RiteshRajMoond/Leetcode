@@ -19,7 +19,8 @@ class Solution {
 
         if(board[row][col] != '.') return solve_sudoku(board, nxt_row, nxt_col);
 
-        for(char num = '1'; num <= '9'; num++) {
+        for(int i = 1; i <= 9; i++) {
+            char num = '0' + i;
             if(is_safe(board, row, col, num)) {
                 board[row][col] = num;
                 if(solve_sudoku(board, nxt_row, nxt_col)) return true;
