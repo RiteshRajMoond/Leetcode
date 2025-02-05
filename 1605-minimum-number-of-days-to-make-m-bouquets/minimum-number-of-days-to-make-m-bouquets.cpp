@@ -1,33 +1,34 @@
 class Solution {
+    bool if_possible(int day, int m, int k, vector<int>& bloom) {
+        int cnt = 0, num = 0;
+        for(int i = 0; i < bloom.size(); i++) {
+            if(bloom[i] <= day) {
+                cnt++;
+                if(cnt == k) {
+                    num++;
+                    cnt = 0;
+                }
+            } else {
+                cnt = 0;
+            }
+        }
+        return num >= m;
+    }
+
 public:
     int minDays(vector<int>& bloomDay, int m, int k) {
         int n = bloomDay.size();
-        if((long)m*k > n) return -1;
 
-        int l = INT_MAX, r = INT_MIN;
-        for(int& i : bloomDay) l = min(l, i), r = max(r, i);
-        int res = -1;
-        while(l <= r) {
-            int mid = l + (r - l)/2;
-            if(f(bloomDay, m, k, mid)) {
+        int low = 1, high = *max_element(bloomDay.begin(), bloomDay.end());
+        int res = high+10;
+        while(low <= high) {
+            int mid = low + (high - low)/2;
+            if(if_possible(mid, m, k, bloomDay)) {
                 res = mid;
-                r = mid-1;
-            } else l = mid+1;
+                high = mid-1;
+            } else low = mid+1;
         }
 
-        return res;
-    }
-private:
-    bool f(vector<int>& arr, int m, int k, int day) {
-        int cnt = 0, total = 0;
-
-        for(int& i : arr) {
-            if(day >= i) {
-                cnt++;
-                if(cnt == k) total++, cnt = 0;
-            } else cnt = 0;
-        }
-
-        return total >= m;
+        return res == high+10 ? -1 : res;
     }
 };
