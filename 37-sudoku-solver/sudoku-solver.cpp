@@ -1,15 +1,12 @@
 class Solution {
     bool is_safe(vector<vector<char>>&board, int row, int col, char num) {
         // check in row
+        // check in col
         for(int j = 0; j < 9; j++) {
             if(board[row][j] == num) return false;
+            if(board[j][col] == num) return false;
         }
-
-        // check in col
-        for(int i = 0; i < 9; i++) {
-            if(board[i][col] == num) return false;
-        }
-
+        
         // check in the 3X3 box
         int s_row = (row/3)*3;
         int s_col = (col/3)*3;
