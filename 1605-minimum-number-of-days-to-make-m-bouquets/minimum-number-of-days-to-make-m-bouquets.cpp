@@ -18,9 +18,10 @@ class Solution {
 public:
     int minDays(vector<int>& bloomDay, int m, int k) {
         int n = bloomDay.size();
+        if((long)m*k > n) return -1;
 
         int low = 1, high = *max_element(bloomDay.begin(), bloomDay.end());
-        int res = high+10;
+        int res = high;
         while(low <= high) {
             int mid = low + (high - low)/2;
             if(if_possible(mid, m, k, bloomDay)) {
@@ -29,6 +30,6 @@ public:
             } else low = mid+1;
         }
 
-        return res == high+10 ? -1 : res;
+        return res;
     }
 };
