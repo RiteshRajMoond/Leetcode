@@ -27,7 +27,7 @@ public:
             if (cur_task > 0)
                 q.push({cur_task, time + n});
 
-            if (!q.empty() && q.front().second == time) {
+            if (!q.empty() && q.front().second <= time) {
                 pq.push(q.front().first);
                 q.pop();
             }
