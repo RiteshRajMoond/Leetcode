@@ -1,6 +1,7 @@
 class Solution {
 public:
     bool isNStraightHand(vector<int>& hand, int groupSize) {
+        if(hand.size()%groupSize) return false;
         unordered_map<int, int> mp;
         for(int& num : hand) {
             mp[num]++;
