@@ -1,7 +1,11 @@
 class Twitter {
-    unordered_map< int, unordered_set<int> > followers; // user_id -> set of followers
-    unordered_map< int, vector<pair<int, int>> >  tweets; // user_id -> {time_stamp, tweet_id}
     int timestamp;
+
+    // user_id -> list of people following
+    unordered_map<int, unordered_set<int> > followers; 
+
+    // user_id -> list of {timestamp, tweet_id}
+    unordered_map<int, vector<pair<int, int>> > tweets;
 public:
     Twitter() {
         timestamp = 0;
@@ -12,21 +16,20 @@ public:
     }
     
     vector<int> getNewsFeed(int userId) {
-        priority_queue< pair<int, int> > pq; // maxHeap -> {timestamp, tweetId}
+        priority_queue< pair<int, int> > pq; // {timestamp, tweet_id};
 
-        // Add users tweets
+        // user's own tweet push
         for(const auto& tweet : tweets[userId]) {
             pq.push(tweet);
         }
 
-        // Add followee's tweets
-        for(int followeeId : followers[userId]) {
-            for(const auto& tweet : tweets[followeeId]) {
+        // push the tweets of the people users follows
+        for(const auto& follower_id : followers[userId]) {
+            for(const auto& tweet : tweets[follower_id]) {
                 pq.push(tweet);
             }
         }
 
-        // get last 10 posts
         vector<int> feed;
         for(int i = 0; i < 10 && !pq.empty(); i++) {
             feed.push_back(pq.top().second);
@@ -34,8 +37,6 @@ public:
         }
 
         return feed;
-
-
     }
     
     void follow(int followerId, int followeeId) {
