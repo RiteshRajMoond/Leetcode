@@ -1,11 +1,7 @@
 class Twitter {
     int timestamp;
-
-    // user_id -> list of people following
-    unordered_map<int, unordered_set<int> > followers; 
-
-    // user_id -> list of {timestamp, tweet_id}
-    unordered_map<int, vector<pair<int, int>> > tweets;
+    unordered_map<int, set<int>> following; // user_id -> people this user follows following 
+    unordered_map<int, vector<pair<int, int>>> tweets; // user_id -> {timestamp, tweet_id}
 public:
     Twitter() {
         timestamp = 0;
@@ -16,21 +12,17 @@ public:
     }
     
     vector<int> getNewsFeed(int userId) {
-        priority_queue< pair<int, int> > pq; // {timestamp, tweet_id};
+        vector<int> feed;
+        priority_queue<pair<int, int>> pq; // timestamp, tweetId;
 
-        // user's own tweet push
-        for(const auto& tweet : tweets[userId]) {
-            pq.push(tweet);
-        }
+        for(const auto& tweet : tweets[userId]) pq.push(tweet);
 
-        // push the tweets of the people users follows
-        for(const auto& follower_id : followers[userId]) {
-            for(const auto& tweet : tweets[follower_id]) {
+        for(const auto& user_id : following[userId]) {
+            for(const auto& tweet : tweets[user_id]) {
                 pq.push(tweet);
             }
         }
 
-        vector<int> feed;
         for(int i = 0; i < 10 && !pq.empty(); i++) {
             feed.push_back(pq.top().second);
             pq.pop();
@@ -40,11 +32,11 @@ public:
     }
     
     void follow(int followerId, int followeeId) {
-        followers[followerId].insert(followeeId);
+        following[followerId].insert(followeeId);
     }
     
     void unfollow(int followerId, int followeeId) {
-        followers[followerId].erase(followeeId);
+        following[followerId].erase(followeeId);
     }
 };
 
