@@ -1,5 +1,4 @@
 class Solution {
-    unordered_map<int, multiset<int>> mp; // sum -> indices;
     int calc_sum_of_digits(int num) {
         int sum = 0;
         while(num) {
@@ -11,20 +10,19 @@ class Solution {
     }
 public:
     int maximumSum(vector<int>& nums) {
-        for(int& num : nums) {
-            int sum_of_digits = calc_sum_of_digits(num);
-            mp[sum_of_digits].insert(num);
+        unordered_map<int, int> mp;
+        int max_sum = -1;
+
+        for(int num : nums) {
+            int digit_sum = calc_sum_of_digits(num);
+
+            if(mp.count(digit_sum)) {
+                max_sum = max(max_sum, mp[digit_sum] + num);
+            }
+
+            mp[digit_sum] = max(mp[digit_sum], num);
         }
 
-        int max_sum = -1;
-        for(auto& [sum, numbers]: mp) {
-            int n = numbers.size();
-            if(n <= 1) continue;
-            auto num1 = numbers.begin(), num2 = numbers.begin();
-            advance(num1, n-1);
-            advance(num2, n-2);
-            max_sum = max(max_sum, *num1 + *num2);
-        }
         return max_sum;
     }
 };
