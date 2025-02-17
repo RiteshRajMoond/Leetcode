@@ -1,6 +1,6 @@
 class Solution { 
 public:
-    int numTilePossibilities(std::string tiles) {
+    int numTilePossibilities(string tiles) {
         int n = tiles.length();
         vector<int> counts(26, 0);
         vector<int> fac(n + 1, 1);
