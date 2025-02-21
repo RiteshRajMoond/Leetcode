@@ -23,24 +23,25 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> dp(n+1, vector<int> (5, 0));
+        vector<int> cur (5, 0), next(5, 0);
 
         for(int i = n-1; i >= 0; i--) {
             for(int j = 3; j >= 0; j--) {
                 if(j&1) {
-                    int sell = dp[i+1][j+1] + prices[i];
-                    int not_sell = dp[i+1][j];
+                    int sell = next[j+1] + prices[i];
+                    int not_sell = next[j];
 
-                    dp[i][j] = max(sell, not_sell);
+                    cur[j] = max(sell, not_sell);
                 } else {
-                    int buy = dp[i+1][j+1] - prices[i];
-                    int not_buy = dp[i+1][j];
+                    int buy = next[j+1] - prices[i];
+                    int not_buy = next[j];
 
-                    dp[i][j] = max(buy, not_buy);
+                    cur[j] = max(buy, not_buy);
                 }
             }
+            next = cur;
         }
 
-        return dp[0][0];
+        return next[0];
     }
 };
