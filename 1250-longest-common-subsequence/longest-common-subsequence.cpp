@@ -4,17 +4,18 @@ public:
         int n = text1.size();
         int m = text2.size();
 
-        vector<vector<int>> dp(n+1, vector<int> (m+1, 0));
+        vector<int> cur(m+1, 0), nxt(m+1, 0);
 
         for(int i = n-1; i >= 0; i--) {
             for(int j = m-1; j >= 0; j--) {
                 if(text1[i] == text2[j]) 
-                    dp[i][j] = 1 + dp[i+1][j+1];
+                    cur[j] = 1 + nxt[j+1];
                 else 
-                    dp[i][j] = max(dp[i+1][j], dp[i][j+1]);
+                    cur[j] = max(nxt[j], cur[j+1]);
             }
+            nxt = cur;
         }
-        return dp[0][0];
+        return cur[0];
     }
 
 };
