@@ -1,14 +1,15 @@
 class Solution {
 public:
     int minAddToMakeValid(string s) {
-        int cnt = 0, rem = 0;
+        int opn = 0, cls = 0;
         for(char& c : s) {
-            if(c == '(') cnt++;
+            if(c == '(') opn++;
             else {
-                if(cnt) cnt--;
-                else rem++;
+                if(opn) opn--;
+                else cls++;
             }
         }
-        return cnt + rem;
+
+        return cls + opn;
     }
 };
