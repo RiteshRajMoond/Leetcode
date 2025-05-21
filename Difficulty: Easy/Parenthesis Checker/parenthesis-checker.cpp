@@ -1,47 +1,22 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 
 class Solution {
-    bool is_pair(const char& a, const char& b) {
-        if(a == '(' && b == ')') return true;
-        else if(a == '{' && b == '}') return true;
-        else if(a == '[' && b == ']') return true;
+  public:
+    bool is_match(char c1, char c2) {
+        if(c1 == '(' && c2 == ')' || c1 == '{' && c2 == '}' || c1 == '[' && c2 == ']')
+            return true;
         return false;
     }
-  public:
+  
     bool isBalanced(string& s) {
         // code here
         stack<char> st;
+        
         for(char& c : s) {
             if(c == '(' || c == '{' || c == '[') st.push(c);
-            else if(!st.empty() && is_pair(st.top(), c)) st.pop();
-            else st.push(c);
+            else if(!st.empty() && is_match(st.top(), c)) st.pop();
+            else return false;
         }
         
         return st.empty();
     }
 };
-
-//{ Driver Code Starts.
-
-int main() {
-    int t;
-    string a;
-    cin >> t;
-    while (t--) {
-        cin >> a;
-        Solution obj;
-        if (obj.isBalanced(a))
-            cout << "true" << endl;
-        else
-            cout << "false" << endl;
-
-        cout << "~"
-             << "\n";
-    }
-}
-// } Driver Code Ends
