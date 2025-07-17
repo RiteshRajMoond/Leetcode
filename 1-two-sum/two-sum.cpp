@@ -1,19 +1,26 @@
 class Solution {
 public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int> res(2);
+    vector<int> twoSum(vector<int> nums, int target) {
+        vector<int> result(2);
         int n = nums.size();
 
-        for(int i = 0; i < n; i++) {
-            for(int j = i+1; j < n; j++) {
-                int sum = nums[i] + nums[j];
-                if(sum == target) {
-                    res[0] = i;
-                    res[1] = j;
-                    break;
-                } 
+        map<int, int> number_to_index_mapping;
+
+        number_to_index_mapping[nums[0]] = 0;
+
+        for (int i = 1; i < n; i++) {
+            int cur_num = nums[i];
+            int required_number = target - cur_num;
+
+            if (number_to_index_mapping.count(required_number)) {
+                result[0] = number_to_index_mapping[required_number];
+                result[1] = i;
+                break;
             }
+
+            number_to_index_mapping[cur_num] = i;
         }
-        return res;
+
+        return result;
     }
 };
